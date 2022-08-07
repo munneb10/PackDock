@@ -91,8 +91,4 @@ def onGetData(data):
     print(data,end='')
 tester=TerHandler("9904522cafee")
 tester.runTerminalCommand("apt-get install vim")
-# while tester.status!=tester.TerStatus.COMPLETED and tester.status!=tester.TerStatus.INITIAL:
-#     tester.getOutput(1000,onData=onGetData)
-#     if tester.status==tester.TerStatus.PENDING:
-#         inp=random.randint(0,9)
-#         tester.sendOutput("y")
+
