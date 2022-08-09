@@ -1,38 +1,5 @@
-import select
-import subprocess
-import docker
 from enum import Enum
-import shlex
-class containerManager:
-    def createContainer():
-        result=subprocess.run(
-            shlex.split("docker create -a stdin -a stdout -i -t ubuntu"), capture_output=True
-        )
-        if result.stderr:
-            return None
-        return result.stdout.decode("utf-8")
-    def runContainer(self,givenId):
-        containerId=""
-        if not givenId:
-            containerId=self.createContainer()
-            if not containerId:
-                return None    
-        else:
-            containerId=givenId
-        result=subprocess.run(
-            shlex.split(f"docker start {containerId}"), capture_output=True
-        )
-        if result.stderr:
-            subprocess.run(
-            shlex.split(f"docker rm {containerId}"), capture_output=True
-            )   
-            return None
-        return result.stdout.decode("utf-8")
-    def removeContainer(givenId):
-        res=subprocess.run(shlex.split(f"docker rm {givenId}"), capture_output=True)   
-        if res.stderr:
-            return None
-        return res.stdout.decode("utf-8")    
+import select
 class TerHandler:
     class TerStatus(Enum):
         COMPLETED="completed"
@@ -46,15 +13,12 @@ class TerHandler:
         self.conId=conId
         self.status=self.TerStatus.INITIAL
     def setupContainer(self):
-        cl=docker.from_env()
-        con=cl.containers.get(self.conId)
-        if con.status!="running":
-            result=subprocess.run(shlex.split(f"docker start {self.conId}"), capture_output=True)
-            if result.stderr:                   
-                print("failed to start container")
-                return False
-        self.container=con
-        return True
+        from containerHandlers.handle_container import containerManager
+        runningContainer=containerManager().runContainer(self.conId)
+        if runningContainer is not None:
+            self.container=runningContainer
+            return True
+        return False
     def runTerminalCommand(self,command):
         if not self.setupContainer() or command=="":
             return False
@@ -90,5 +54,9 @@ class TerHandler:
 def onGetData(data):
     print(data,end='')
 tester=TerHandler("9904522cafee")
-tester.runTerminalCommand("apt-get install vim")
-
+# tester.runTerminalCommand("pip install flask")
+while tester.status!=tester.TerStatus.COMPLETED and tester.status!=tester.TerStatus.INITIAL:
+    tester.getOutput(1000,onData=onGetData)
+    if tester.status==tester.TerStatus.PENDING:
+        # inp=random.randint(0,9)
+        tester.sendOutput("y")
