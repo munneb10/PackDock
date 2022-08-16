@@ -19,7 +19,16 @@ class containerManager:
                 return None
         return con
     def removeContainer(self,givenId):
-        res=subprocess.run(shlex.split(f"docker rm {givenId}"), capture_output=True)   
+        res=subprocess.run(shlex.split(f"docker rm -f {givenId}"), capture_output=True)   
         if res.stderr:
             return None
-        return res.stdout.decode("utf-8")    
+        return res.stdout.decode("utf-8")  
+    def containerExist(self,givenId): 
+        import docker
+        cl=docker.from_env()
+        try:
+            con=cl.containers.get(givenId)
+            print(con)
+            return True       
+        except Exception:
+            return False
