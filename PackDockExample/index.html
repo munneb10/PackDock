@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PackDock Example Demo</title>
+<!-- <link rel="stylesheet" href="./codemirror5/lib/codemirror.css"> -->
+  <style>
+    /* #fileStyle{
+     
+    }     */
+    #dirStyle {
+      width: 100%;
+      text-align: left;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    #View {
+      width: 50%;
+      margin: auto auto;
+      height: 90vh;
+      background-color: rgb(206, 193, 172);
+    }
+
+    #dirStatusPreview {
+      width: 90%;
+      height: 20px;
+      /* margin-left: 5%; */
+      margin-top: 10px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #dirFilePreview {
+      width: 90%;
+      height: 80%;
+      /* margin: 5%; */
+      margin: auto;
+      overflow: auto;
+    }
+    #Preview{
+      display: flex;
+      width: 100%;
+      height: 30px;
+      margin-top: 10px;
+    }
+    #button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  /* margin: 4px 2px; */
+  cursor: pointer;
+  padding: 10px 24px;
+}
+#button:hover{
+  opacity: 0.9;
+  /* display: none; */
+}
+#dialog{
+  position: absolute;
+  background-color:white;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+}
+  </style>
+   <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+ </link>
+ <link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
+</head>
+
+<body style="background-color:black;color: white;position: relative;">
+  <div id="dialogHelper">
+    <div id="dialog">
+      <button id="button">Copy</button>
+      <button id="button">Paste</button>
+      <button id="button" onclick="deleteSel()">Delete</button>
+    </div>
+  </div>
+  <div id="View">    
+    <div style="display: flex;justify-content: space-evenly;color: black;font-weight: bold;cursor: pointer;font-size: 15px;" onclick="moveBackDir()">
+      <p><</p>
+    <input type="text" id="dirStatusPreview">
+    </div>
+    <div id="dirFilePreview">
+    </div>
+    <div style="display:flex;justify-content: space-around;">
+      <button id="button" onmousedown="createFile(event)">Create File</button>
+      <button id="button" onmousedown="createFolder(event)">Create Folder</button>
+    </div>
+  </div>
+</body>
+<script src="./js/manage_dir.js"></script>
+<script src="./js/manage_container.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js">
+</script>
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js">
+</script>
+
+</html>

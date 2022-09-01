@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+  </link>
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
+  </head>
+<body style="background-color:black">
+    <div id="container" style="width: 50%;"></div>
+    <h1 style="color: white;">Enter Your Command</h1>
+    <div style="display: flex;flex-direction: row; width: 50%;justify-content: space-around;">
+        <input type="text" id="command" name="Command" style="width: 90%;">
+        <button style="color:white;font-weight: bold ;border-radius: 5px;background-color: blueviolet;border: 0px;">Run</button>
+    </div>
+    <h1 style="color: white;">Send the Input</h1>
+    <div style="display: flex;flex-direction: row; width: 50%;justify-content: space-around;">
+        <input type="text" id="command" name="Command" style="width: 90%;">
+        <button style="color:white;font-weight: bold ;border-radius: 5px;background-color: blueviolet;border: 0px;">Send</button>
+    </div>
+    <h1 style="color: white;">Your Command Output</h1>
+    <textarea name="terminal" rows="10"  style="background-color: rgb(48, 10, 36);width: 50%;color: white;font-size: 20px;" placeholder=">>>>"></textarea>
+</body>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js">
+</script>
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js">
+</script>
+<script>
+CodeMirror(document.getElementById('container'), {
+  lineNumbers: true,
+  tabSize: 2,
+  value: 'console.log("Hello, World");',
+  theme: 'monokai',
+  mode:'javascript'
+});
+</script>
+</html>

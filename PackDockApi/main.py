@@ -7,9 +7,10 @@ import flask
 from flask import jsonify,request
 import random
 import string
-
 from TerminalHandler.handle_terminal import TerStatus
+from flask_cors import CORS
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 commandExecPool={}
 def get_random_string(length):
@@ -62,9 +63,8 @@ def runCommand():
             while execCmdId in commandExecPool.keys():
                 execCmdId=get_random_string(10)
             commandExecPool[execCmdId]=TerHand
-            return jsonify({"cmdId":execCmdId}),200
-        return jsonify({"cmdId":""}),500
-    return jsonify({"message":"Please send conId or command"}),400
+            return jsonify({"cmdId":execCmdId})
+    return jsonify({"message":"Please send conId or command"})
 
 # Get output api req : need command id that is executing
 @app.route('/getCommandOutput', methods=['GET'])
