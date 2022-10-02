@@ -40,3 +40,29 @@ const getCommandOutput =async (commandId) => {
         return {}
     }
 }
+const getCommandStatus=async(commandId)=>{
+    const params = new URLSearchParams([['cmdId', commandId]]);
+    let response =await axios({
+        method: 'get',
+        url: 'http://127.0.0.1:5000/getCommandStatus',
+        params: params
+    })
+    if (response.data) {
+        return response.data.status
+    } else {
+        return {}
+    }
+}
+const removeCompletedCommand=async(commandId)=>{
+    const params = new URLSearchParams([['cmdId', commandId]]);
+    let response =await axios({
+        method: 'get',
+        url: 'http://127.0.0.1:5000/removeCompletedCommand',
+        params: params
+    })
+    if (response.data) {
+        return response.data.status
+    } else {
+        return {}
+    }
+}

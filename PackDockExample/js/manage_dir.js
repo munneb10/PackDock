@@ -305,3 +305,64 @@ const createFolder=async(e)=>{
         alert("Folder successfully created")
     }
 }
+
+const show_running_commands=async()=>{
+    document.getElementById("run_command").style.visibility="visible";
+    let commands=JSON.parse(localStorage.getItem("running_commands"));
+    let newComm=[]    
+    for (let index = 0; index < commands.length; index++) {
+        const element = commands[index];
+        let stat=await getCommandStatus(element.cmd_id);        
+        console.log(stat);
+        if (stat!="unavailable" && stat!="failed") {
+         newComm.push(element);   
+        }
+    }
+    localStorage.setItem("running_commands",JSON.stringify(newComm))
+    let dialog=document.getElementById("commands")
+    dialog.innerHTML="<tr><th>Command Code</th><th>Command Status</th></tr>";
+    commands=JSON.parse(localStorage.getItem("running_commands"));
+    commands.forEach(element => {
+    let row=document.createElement("tr");
+    row.setAttribute("value",element.cmd_id);
+    let conditionalRow="<td>No action</td>";
+    if (element.cmd_stat=="COMPLETED") {
+            conditionalRow=`<td><button onclick=removeCompleted('${element.cmd_id}')>Remove</button></td>`
+    }
+    let col=`<td>${element.cmd_id}</td><td>${element.cmd_stat}</td>${conditionalRow}`;
+    row.innerHTML=col;
+    dialog.appendChild(row);
+});
+}
+const removeCompleted=async(cId)=>{
+alert(cId);
+let st=await removeCompletedCommand(cId);
+if (st=="removed") {
+    let commands=JSON.parse(localStorage.getItem("running_commands"));
+    let i=commands.indexOf({"cmd_id":cId,"cmd_stat":"COMPLETED"});
+    commands.splice(i,1);
+    localStorage.setItem("running_commands",JSON.stringify(commands));
+    alert("Command removed successfully");
+    show_running_commands();
+}else{
+    alert("Failed to remove command");
+}
+}
+const hide_run_command_dialog=()=>{
+    document.getElementById("run_command").style.visibility="hidden";
+}
+const run_given_command=async()=>{
+    let command=document.getElementById("given_command").value;
+    if (command!="") {
+        if (command.indexOf("$$cur")!=-1) {
+            command=command.replace("$$cur",current_dir)            
+        }
+        let command_id=await runCommand(command,containerId);
+        let cmdStat=await getCommandStatus(command_id);
+        let all_commands=JSON.parse(localStorage.getItem("running_commands"));
+        all_commands.push({"cmd_id":command_id,"cmd_stat":cmdStat});
+        localStorage.setItem("running_commands",JSON.stringify(all_commands))
+    }else{
+        alert("please write some command");
+    }
+}

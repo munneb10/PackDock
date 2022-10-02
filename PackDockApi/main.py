@@ -1,7 +1,6 @@
 """                             Api
                         to manage the container 
 """
-import stat
 from urllib import response
 import flask 
 from flask import jsonify,request
@@ -77,12 +76,34 @@ def getCommandOutput():
                 data=gotData
                 global statu
                 statu=status
-                if commandExecPool[cmdId].status==TerStatus.COMPLETED:
-                    commandExecPool.pop(cmdId)
+                # if commandExecPool[cmdId].status==TerStatus.COMPLETED:
+                #     commandExecPool.pop(cmdId)
             commandExecPool[cmdId].getOutput(1000,onData)
             return {"output":data,"status":statu},200
         else:
-            return "Not valid command id"
+            return {"output":"","status":"unavailable"},200
+
+@app.route('/removeCompletedCommand', methods=['GET'])
+def removeCompletedCommand():
+    if 'cmdId' in request.args:
+        cmdId=request.args['cmdId']
+        if cmdId in commandExecPool.keys():
+                commandExecPool.pop(cmdId)
+                return {"status":"removed"},200
+        else:
+            return {"status":"unavailable"},200
+@app.route('/getCommandStatus', methods=['GET'])
+def getCommandStatus():
+    if 'cmdId' in request.args:
+        cmdId=request.args['cmdId']
+        if cmdId in commandExecPool.keys():
+            if commandExecPool[cmdId].status==TerStatus.COMPLETED:
+                commandExecPool.pop(cmdId)
+                return {"status":"completed"},200
+            return {"status":statu},200
+        else:
+            return {"status":"unavailable"},200
+
 @app.route('/sendCommandInput', methods=['GET'])
 def sendCommandInput():
     if 'cmdId' in request.args and 'input' in request.args:
