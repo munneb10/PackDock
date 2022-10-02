@@ -1,3 +1,4 @@
+from distutils.log import error
 from enum import Enum
 import select
 class TerStatus(Enum):
@@ -25,12 +26,7 @@ class TerHandler:
     def runTerminalCommand(self,command):
         if not self.setupContainer() or command=="":
             return False
-        try:          
-            crSt,createFile=self.container.exec_run("touch temp.sh",stream=True,tty=True,stdin=True,socket=True)
-            d=createFile._sock.recv(100)
-            if d!=b'':
-                self.status=TerStatus.FAILED
-                return None
+        try:
             _,cmdHandler =self.container.exec_run(["bash","-c",command+";"+f"echo --completed_command_{self.conId}"],stream=True,tty=True,stdin=True,socket=True)
             cmdHandler._sock.setblocking(False)
             self.cmdSocket=cmdHandler._sock
@@ -46,7 +42,7 @@ class TerHandler:
         ack,_,_=select.select([self.cmdSocket],[],[],1)
         try:
             self.data=self.cmdSocket.recv(noOfBytes)
-            decodedData=self.data.strip(b'\r').decode('utf-8').replace('\r','')
+            decodedData=self.data.strip(b'\r').decode('utf-8',errors='ignore').replace('\r','')
             if f"--completed_command_{self.conId}" in self.output:
                 self.status=TerStatus.COMPLETED
             if self.status==TerStatus.COMPLETED:

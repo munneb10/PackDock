@@ -21,7 +21,7 @@
     #View {
       width: 50%;
       margin: auto auto;
-      height: 90vh;
+      height: 60vh;
       background-color: rgb(206, 193, 172);
     }
 
@@ -38,6 +38,7 @@
     #dirFilePreview {
       width: 90%;
       height: 80%;
+      /* z-index: -1000; */
       /* margin: 5%; */
       margin: auto;
       overflow: auto;
@@ -64,12 +65,23 @@
   opacity: 0.9;
   /* display: none; */
 }
+.center{
+display: flex;
+justify-content: center;
+}
 #dialog{
   position: absolute;
   background-color:white;
   display: flex;
   flex-direction: column;
   visibility: hidden;
+}
+.terminalHandler{
+  margin-top: 20px;
+}
+.command_input{
+  display: flex;
+  justify-content: space-around;  
 }
   </style>
    <link rel="stylesheet"
@@ -82,8 +94,9 @@
 <body style="background-color:black;color: white;position: relative;">
   <div id="dialogHelper">
     <div id="dialog">
-      <button id="button">Copy</button>
-      <button id="button">Paste</button>
+      <button id="button" onclick="copySel()">Copy</button>
+      <button id="button" onclick="cutSel()">Cut</button>
+      <button id="button" onclick="pasteSel()">Paste</button>
       <button id="button" onclick="deleteSel()">Delete</button>
     </div>
   </div>
@@ -94,9 +107,32 @@
     </div>
     <div id="dirFilePreview">
     </div>
-    <div style="display:flex;justify-content: space-around;">
+    <div style="display:flex;justify-content: space-around;margin-top: 10px;">
       <button id="button" onmousedown="createFile(event)">Create File</button>
       <button id="button" onmousedown="createFolder(event)">Create Folder</button>
+    </div>
+    <div class="terminalHandler">
+      <div class="notes">
+        <p>Note : To Refer current opened directory write $$cur instead of path </p>
+      </div>
+      <div class="command_input">
+        <div class="command">
+          <input type="text" placeholder="Write Command">
+          <button id="button">Run</button>
+        </div>
+        <div class="input" style="display: flex;flex-direction:row;">
+          <div style="display: flex;flex-direction:column;justify-content: center;">
+            <p style="margin: 0;padding:0;color: black;"> </p>
+            <input type="text" placeholder="Write input">
+          </div>
+          <button id="button">Send Input</button>
+        </div>
+      </div>
+      <div class="command_output">
+        <div class="center" style="margin-top:10px;">
+        <textarea style="width: 95%;background-color: rgb(48, 10, 36);color: white;" name="" id="" cols="30" rows="15"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 </body>
