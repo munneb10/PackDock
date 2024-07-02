@@ -1,8 +1,8 @@
-#Control an Linux operating system through an API calls
+# Control an Linux operating system through an API calls
 
-##Technologies Used
+## Technologies Used
 
-### Python
-### Flask
-### Docker
-### JavaScript
+###   Python
+###   Flask
+###   Docker
+###   JavaScript
